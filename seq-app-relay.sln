@@ -22,7 +22,7 @@ EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "asset", "asset", "{AC60371C-2888-45BB-9770-2A690DEA80FA}"
 ProjectSection(SolutionItems) = preProject
-	asset\seq-app-http.png = asset\seq-app-http.png
+	asset\seq-app-relay.png = asset\seq-app-relay.png
 EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{FE94A479-6D28-4D40-955D-C7A1A1121B4D}"
