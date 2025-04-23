@@ -132,6 +132,8 @@ class IngestionRelay: IAsyncDisposable
                     _diagnosticLog.Error("Dropping batch after {Tries} attempts to relay, status code {StatusCode}/{StatusDescription} (stopping: {Stopping})", tries, (int)statusCode, statusCode, _done.IsCancellationRequested);
                     return;
                 }
+
+                await Task.Delay(15_000 * tries, _done.Token);
             }
             catch (Exception ex)
             {
