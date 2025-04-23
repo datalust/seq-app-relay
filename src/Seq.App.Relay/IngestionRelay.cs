@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.RegularExpressions;
 using Serilog;
 
 namespace Seq.App.Relay;
@@ -12,6 +13,7 @@ class IngestionRelay: IAsyncDisposable
     const string ContentType = "application/vnd.serilog.clef";
     readonly Encoding _encoding = new UTF8Encoding(false);
     const int BatchSizeLimit = 1024 * 1024;
+    static readonly Regex EventIdRegex = new("\"@seqid\":\"event-[A-Za-z0-9]+\",?", RegexOptions.Compiled);
 
     readonly Task _relayBatches;
     readonly CancellationTokenSource _done = new();
@@ -46,6 +48,12 @@ class IngestionRelay: IAsyncDisposable
 
     public async Task SendAsync(string json)
     {
+        // This is imprecise, but the alternative options for parsing and reformatting the event
+        // without `@seqid` risk inadvertent modification of numeric values that don't fit
+        // the types supported by `System.Text.Json`, and it's preferable to avoid pulling in
+        // `Newtonsoft.Json` right now because it's a host-provided library. 
+        var evt = EventIdRegex.Replace(json, "");
+        
         Task wait;
         lock (_sync)
         {
@@ -53,7 +61,7 @@ class IngestionRelay: IAsyncDisposable
                 return;
 
             var writer = new StreamWriter(_bufferingBatch, _encoding);
-            writer.WriteLine(json);
+            writer.WriteLine(evt);
             writer.Flush();
 
             if (_bufferingBatch.Length < BatchSizeLimit)
