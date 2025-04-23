@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>A simple HTTP/JSON forwarder that preserves all event metadata.</Description>
+    <Authors>Datalust, Serilog Contributors</Authors>
+    <TargetFramework>net6.0</TargetFramework>
+    <PackageTags>seq-app</PackageTags>
+    <PackageProjectUrl>https://github.com/nblumhardt/seq-app-relay</PackageProjectUrl>
+    <PackageIcon>seq-app-relay.png</PackageIcon>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <InternalsVisibleTo Include="Seq.App.Relay.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Nullable" Version="1.3.1" PrivateAssets="All" />
+    <PackageReference Include="Seq.Apps" Version="2023.4.0" />
+    <PackageReference Include="Seq.Syntax" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../../asset/seq-app-relay.png" Pack="true" Visible="false" PackagePath="" />
+    <None Include="../../LICENSE" Pack="true" PackagePath="" />
+    <None Include="./obj/publish/**/*" Exclude="./obj/publish/$(MSBuildProjectName).dll;./obj/publish/Seq.Apps.dll;./obj/publish/Serilog.dll" Pack="true" PackagePath="lib/$(TargetFramework)" />
+  </ItemGroup>
+</Project>
