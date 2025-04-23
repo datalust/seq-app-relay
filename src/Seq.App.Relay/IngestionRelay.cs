@@ -51,11 +51,10 @@ class IngestionRelay: IAsyncDisposable
         {
             if (_done.IsCancellationRequested)
                 return;
-            
-            using (var writer = new StreamWriter(_bufferingBatch, _encoding))
-            {
-                writer.WriteLine(json);
-            }
+
+            var writer = new StreamWriter(_bufferingBatch, _encoding);
+            writer.WriteLine(json);
+            writer.Flush();
 
             if (_bufferingBatch.Length < BatchSizeLimit)
                 return;
